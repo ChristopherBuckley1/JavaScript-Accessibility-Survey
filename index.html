@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel = "stylesheet" href = "style.css" type="text/css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        
+        var totalScore = 0;
+        var scores = [0,0,0,0,0,0,0,0,0,0,0];
+        var sec1Answers = [-1,-1,-1,-1];
+        var sec2Answers = [-1,-1,-1,-1,-1];
+        var sec3Answers = [-1,-1];
+        var sec4Answers = [-1,0,0,0];
+        var sec5Answers = [-1,-1,-1,-1,-1];
+        var sec6Answers = [-1,-1,-1,-1,-1];
+        var sec7Answers = [-1,-1];
+        var sec8Answers = [-1,0,0,0,0,-1,0,0,0,0];
+        var sec9Answers = [-1,-1,-1,-1];
+        var sec10Answers = [-1,0,0,0,0];
+        var sec11Answers = [-1,-1];
+        var i=300;
+        var sectionCounter=0;
+        var europeCountries = ["Ireland","United Kingdom","Germany","France","The Netherlands","Austria","Sweden","Denmark"];
+        var northAmericaCountries = ["Canada","United States","Mexico","Puerto Rico","United States Virgin Islands"];
+        window.onload = function()
+        {
+            timer();
+        }
+        function timer() {         
+             setTimeout(function() {   //How to add a delay to a loop by Daniel Vassallo retrieved from https://stackoverflow.com/a/3583740
+                var time = new Date(i*1000).toISOString().substr(14,5); //Display time by Frank retrieved from https://stackoverflow.com/a/25279340
+                   
+                
+                document.getElementById('timer').innerText="You have 5 minutes to complete the survey. Time remaining: "+time
+                i--;        
+                 if (i != 0) {           
+                    timer();
+                 }
+                                        
+             }, 1000)
+             
+             if(i==1)
+             {
+                window.location.assign("timeout.html");
+             }
+             
+        }
+
+        
+        
+
+        function processScore()
+        {
+            sessionStorage.setItem('totalScore',String(totalScore));
+            
+            window.location.assign("results.html");
+            
+        }
+
+        function saveScore(element,array)
+        {
+            
+            if(element.matches('[type="checkbox"]')) //How to check if a DOM element is a checkbox by Salman A. Retrieved from https://stackoverflow.com/questions/11115363/check-if-dom-element-is-a-checkbox
+            {
+                if(element.checked)
+                {
+                    array[Number(element.id)-1]=Number(element.value);
+                }
+                else
+                {
+                    array[Number(element.id)-1]=0;
+                }
+            }
+            else
+            {
+                array[Number(element.id)-1]=Number(element.value);
+            }
+
+            
+            
+        }
+
+        function showOptional(element){
+            let i=0  
+            for(i;i<document.getElementsByClassName(element).length;i++)
+            {
+                document.getElementsByClassName(element)[i].style.visibility='visible';
+            }
+            
+        }
+        
+
+        function hideOptional(element){
+            let i=0  
+            for(i;i<document.getElementsByClassName(element).length;i++)
+            {
+                document.getElementsByClassName(element)[i].style.visibility='hidden';
+            }
+            
+        }
+
+        function scoreSec(element,answers,button,fieldset,section)
+        {
+            var completed=true;
+            var sectionNo;
+            var stringLength=element.length;
+            
+            if(stringLength==8)
+            {
+                sectionNo=Number(element.substring(7,8));
+                
+            }
+            else
+            {
+                sectionNo=Number(element.substring(7,9));
+               
+            }
+            sectionNo -= 1; 
+        
+            score=0;
+
+            for(var j=0;j<answers.length;j++)
+            {
+                if(answers[j]==-1)
+                {
+                    completed=false;
+                    
+                    var id=j+1;
+                    document.getElementById(element+"T").children[0].children[j].style.backgroundColor='lightgrey';
+            
+                }
+            }
+
+        
+
+            if(completed)
+            {
+                sectionCounter++;
+                var i;
+                score=0;
+                for(i=0; i<answers.length ;i++ )
+                {
+                    score += Number(answers[i]);
+                   totalScore += Number(answers[i]);
+                    
+                }
+                
+               
+                switch(element)
+                {
+                    case 'section1':{
+                       
+                                if(score<10)
+                                {
+                                   
+                                    document.getElementById(section).value="The face to face training session will be a great opportunity for you to get guidance on progressing the universability of your organisation!"
+                                    sessionStorage.setItem('sec1Summary',document.getElementById(section).value);
+                                }
+                                else if(score<16)
+                                {
+                                    document.getElementById(section).value="With a little more thought, you will see more opportunities for increasing the universability of your services!";
+                                    sessionStorage.setItem('sec1Summary',document.getElementById(section).value);
+                                }
+                                else
+                                {
+                                    document.getElementById(section).value="Well done - You are clearly being proactive in considering making your services more universal!"
+                                    sessionStorage.setItem('sec1Summary',document.getElementById(section).value);
+                                }
+                                break;
+
+                    }
+                    case 'section2':{
+
+                            if(score<12)
+                            {
+                                document.getElementById(section).value="The face to face training session will be a great opportunity for you to get guidance on progressing the universability of your organisation!"
+                                sessionStorage.setItem('sec2Summary',document.getElementById(section).value);
+                            }
+                            else if(score<20)
+                            {
+                                document.getElementById(section).value="You have some sense of the benefits of a universal organisation ";
+                                sessionStorage.setItem('sec2Summary',document.getElementById(section).value);
+                            }
+                            else
+                            {
+                                document.getElementById(section).value="You have a very high level of appreciation of the mutual benefits for all stakeholders in an inclusive organisation!"
+                                sessionStorage.setItem('sec2Summary',document.getElementById(section).value);
+                            }
+                            break;
+                        }
+                    case 'section3':{
+
+                        if(score<6)
+                        {
+                            
+                            document.getElementById(section).value="The face to face session has great scope to convince you of the feasibility of promoting inclusion - just keep your mind open to the possibility"
+                            sessionStorage.setItem('sec3Summary',document.getElementById(section).value);
+                        }
+                        else{
+                            
+                            document.getElementById(section).value="You can see an inclusive future for your organisation and its members, the challenge is now to ensure that your decisions and resource allocations make this happen"
+                            sessionStorage.setItem('sec3Summary',document.getElementById(section).value);
+                        }
+                        break;
+                    }
+                    case 'section4':{
+                        if(score<11)
+                        {
+                            document.getElementById(section).value="The face to face training session will only be of value to progressing your universability if you are willing to challenge your belief system about access to fitness services being a fundamental" 
+                            sessionStorage.setItem('sec4Summary',document.getElementById(section).value);
+                        }
+                        else if(score<21)
+                        {
+                            document.getElementById(section).value="While there is some openness to equity in your organisation the commitment is not yet wholly embraced by all. Belief systems within the organisation may be confused and possibly conflicting. It would be desirable to promote dialogue amongst your stakeholders around the topic of inclusion"
+                            sessionStorage.setItem('sec4Summary',document.getElementById(section).value);
+                        }
+                        else{
+                            document.getElementById(section).value="Your organisation’s value system is an inclusive one. Your challenge will be to safeguard this and promote this philosophy within the wider fitness sector"
+                            sessionStorage.setItem('sec4Summary',document.getElementById(section).value);
+                        }
+                        break;
+                    }
+
+                    case 'section5':{
+                        if(score==0)
+                        {
+                            document.getElementById(section).value="Universability is not something with which you have yet engaged, so the face to face training session will be an opportunity for significant learning in this respect"
+                            sessionStorage.setItem('sec5Summary',document.getElementById(section).value);
+                        }
+                        else if(score<11)
+                        {
+                            document.getElementById(section).value="Your policies are confused and possibly conflicting. Some guidance will be needed to bring greater coherency to your efforts to date"
+                            sessionStorage.setItem('sec5Summary',document.getElementById(section).value);
+                        }
+                        else if(score<31)
+                        {
+                            
+                            document.getElementById(section).value="Your journey of making organisational policies inclusive has started well and this may be the catalyst for enhanced universability – if you are open to progressive change"
+                            sessionStorage.setItem('sec5Summary',document.getElementById(section).value);
+                        }
+                        else{
+                            document.getElementById(section).value="Your intentions are very sound in respect of inclusion and you have the potential to be a high achiever in this respect"
+                            sessionStorage.setItem('sec5Summary',document.getElementById(section).value);
+                        }
+                        break;
+                    }
+
+                    case 'section6':{
+                        if(score == 0)
+                        {
+                            document.getElementById(section).value="You have great scope for learning during the face to face training session, once you have an open mind to the possibilities that an inclusive approach can offer"
+                            sessionStorage.setItem('sec6Summary',document.getElementById(section).value);
+                        }
+                        else if(score<21)
+                        {
+                            document.getElementById(section).value="You have made a positive start upon which your organisation can build sound relationships with people with disabilities. Unit three will offer you more ideas in respect of forging alliances with people with disabilities"
+                            sessionStorage.setItem('sec6Summary',document.getElementById(section).value);
+                        }
+                        else{
+                            document.getElementById(section).value="You are already a potential resource for people with disabilities in your community, as your networks are an essential element in the UFIT approach"
+                            sessionStorage.setItem('sec6Summary',document.getElementById(section).value);
+                        }
+                        break;
+                    }
+                case 'section7':{
+                    if(score==0)
+                    {
+                        document.getElementById(section).value="Your organisation has yet to learn the power of dialogue as a means of providing desirable fitness services to all members of the community"
+                        sessionStorage.setItem('sec7Summary',document.getElementById(section).value);
+                    }
+                    else{
+                        document.getElementById(section).value="As a listening organisation you have important information that can guide your journey towards universability. Your challenge is to interpret what is being said and to translate it into inclusive actions"
+                        sessionStorage.setItem('sec7Summary',document.getElementById(section).value);
+                    }
+                    break;
+                }
+                case 'section8':{
+                    if(score==0)
+                    {
+                        document.getElementById(section).value="You have great scope for learning during the face to face training session, once you have an open mind to the possibilities that an inclusive approach can offer"
+                        sessionStorage.setItem('sec8Summary',document.getElementById(section).value);
+                    }
+                    else if(score<21)
+                    {
+                        document.getElementById(section).value="You have made a positive start – you can use the questions here to reflect on how you can make more progress in this respect"      
+                        sessionStorage.setItem('sec8Summary',document.getElementById(section).value);
+                    }
+                    else{
+                        document.getElementById(section).value="You have the potential to be a role model of provision in the fitness sector. Programming is the basic unit of service delivery – where this is inclusive, your relevance to the wider community is enhanced"
+                        sessionStorage.setItem('sec8Summary',document.getElementById(section).value);
+                    }
+                    break;
+                }
+                case 'section9':{
+                    if(score==0)
+                    {
+                        document.getElementById(section).value="Universability is not something with which you have engaged so the face to face training session will be an opportunity for significant learning in this respect"
+                        sessionStorage.setItem('sec9Summary',document.getElementById(section).value);
+                    }
+                    else if(score<11)
+                    {
+                        document.getElementById(section).value="Depending on the strength of influence of those with some perspective on inclusion, you may have scope to drive improvements from within. Consider the scope for repositioning those with training and knowledge in the area of inclusion to optimise their influence"      
+                        sessionStorage.setItem('sec9Summary',document.getElementById(section).value);
+                    }
+                    else if(score<31)
+                    {
+                        document.getElementById(section).value="There is some scope within your organisation to promote universability principles and broaden your organisation’s relevance in the wider community "
+                        sessionStorage.setItem('sec9Summary',document.getElementById(section).value);
+                    }
+                    else
+                    {
+                        document.getElementById(section).value="You have invested in your organisation’s most important asset. Your potential to offer inclusive services is vast. The challenge is to make sure that you optimally deploy this wisdom to make all aspects of your service provision truly inclusive"
+                        sessionStorage.setItem('sec9Summary',document.getElementById(section).value);
+                    }
+                    break;
+
+                }
+            case 'section10':{
+                if(score==0)
+                {
+                    document.getElementById(section).value="The face to face training session will provide you with wonderful ideas for making small (and inexpensive) changes to enhance the universability of the facility."
+                    sessionStorage.setItem('sec10Summary',document.getElementById(section).value);
+                }
+                else if(score==10)
+                {
+                    document.getElementById(section).value="While you have made a start in the direction of universability there is considerable scope for improvements. "
+                    sessionStorage.setItem('sec10Summary',document.getElementById(section).value);
+                }
+                else if(score<31)
+                {
+                    document.getElementById(section).value="While some aspects of your facility are accessible there is scope for enhancement. The face to face training session will offer you some suggestions for improvement here."
+                    sessionStorage.setItem('sec10Summary',document.getElementById(section).value);
+                }
+                else
+                {
+                    document.getElementById(section).value="The facility is largely accessible and hence there is significant scope for promoting universability. "
+                    sessionStorage.setItem('sec10Summary',document.getElementById(section).value);
+                }
+                break;
+
+            }
+        case 'section11':{
+            if(score==0)
+                {
+                    document.getElementById(section).value="The face to face training session will offer you many ideas for inclusivizing your promotion materials"
+                    sessionStorage.setItem('sec11Summary',document.getElementById(section).value);
+                }
+                else if(score==10)
+                {
+                    document.getElementById(section).value="Your organisation has some appreciation of the need for have diversity to be represented in your promotional materials. With a little more thoughtfulness your promotional campaigns will speak louder to a wider audience"
+                    sessionStorage.setItem('sec11Summary',document.getElementById(section).value);
+                }
+                else{
+                    document.getElementById(section).value="You clearly understand the power of imagery and language and your materials may be potential templates for others in the promotion of fitness services"
+                    sessionStorage.setItem('sec11Summary',document.getElementById(section).value);
+                }
+                break;
+        }
+
+
+    }
+                
+            
+               
+                
+                document.getElementById(fieldset).disabled=true;
+                document.getElementById(button).style.display='none';
+                document.getElementById(section).style.display = 'block';
+                
+                document.getElementsByClassName("btnShowNextSec")[sectionNo].style.display='block';
+            }
+            else
+            {
+               alert("Please complete the entire form before proceeding");
+            }
+        }
+        
+        function showNextSec(currentSec,nextSec,textArea) 
+        {
+            var sectionNo;
+            var stringLength=currentSec.length;
+            if(stringLength==8)
+            {//Extracting the section number from the end of the section name
+                sectionNo=Number(currentSec.substring(7,8));
+                
+            }
+            else
+            {
+                //need 2 cases here due to some section names being 9 characters long instead of 8
+                sectionNo=Number(currentSec.substring(7,9));
+                
+            }
+            sectionNo -= 1; 
+
+
+            document.getElementsByClassName('btnShowNextSec')[sectionNo].style.display='none';
+            document.getElementById(textArea).style.display='none';
+            document.getElementById(nextSec).style.display = 'block';
+            document.getElementById(currentSec).style.display = 'none';
+            window.scroll(0, 200);
+        }
+
+        function clearListBox()
+        {
+            var sel = document.getElementById('country');
+            for(x = sel.length - 1; x >= 0; x--) {                      //Remove Option Elements From A Select Element Using JavaScript by Jeffrey Barke retreived from https://dzone.com/articles/remove-option-elements-select
+	        sel.remove(x);
+            } 
+        }
+
+        function loadListBox()
+        {   
+            
+
+            var listBox = document.getElementById("reigon");
+
+            var countryBox = document.getElementById("country");
+
+            document.getElementById("countryListBox").style.display="inline-block";
+
+            var option = document.createElement("option"); 
+
+            var selected = listBox.options[listBox.selectedIndex];
+
+
+            if(selected.text=="Europe")
+            {
+                clearListBox();
+                for(j=0;j<europeCountries.length;j++)
+                {
+                    var option = document.createElement("option");
+                    option.text = europeCountries[j];       
+                    countryBox.options.add(option);
+                }
+            }
+            else
+            {
+                clearListBox();
+                for(j=0;j<northAmericaCountries.length;j++)
+                {
+                    var option = document.createElement("option");
+                    option.text = northAmericaCountries[j];       
+                    countryBox.options.add(option);
+                }
+            }
+
+            
+        }
+
+    </script>
+</head>
+<body>    
+    <div class="main">
+        <div class="inner-content">
+            <h1>Accessibility Survey</h1>
+            <p>
+                The audit below will help you to get a sense of your organisation’s
+                representativeness of the community in which it is located. Ideally
+                any organisation would reflect the demographics of its setting e.g.
+                gender, age and ethnicity. In this instance we are interested in 
+                the relevance of your organisation to people with disabilities. 
+            </p>
+                <p>Please consider the following questions and identify your level of agreement with the statement</p>
+                <strong>
+                  <p>5. Strongly agree</p>
+                  <p>4. Agree</p>
+                  <p>3. Neutral/ Don’t know</p>
+                  <p>2. Disagree</p>
+                  <p>1. Strongly disagree</p>  
+                </strong>
+                  <br>
+
+                  <label for="reigon">Select Reigon:</label>
+
+                  <select name="reigon" id="reigon" onchange="loadListBox()">
+                    <option></option>
+                    <option value="">Europe</option>
+                    <option value="">North America</option>
+                  </select>
+
+
+                <div id="countryListBox">
+                  
+                  <label for="country">Select Country:</label>
+
+                  <select name="country" id="country">
+                    
+                  </select>
+                </div>
+
+            <p id='timer'>You have 5 minutes to complete this survey.  Time remaining: </p>
+            <div id="section1">     
+            <div class="help">
+            <h2>Section 1: Verification*</h2>
+            <span class="help-text">Select 1 value for each question, on a scale of 1-5 how much you agree/disagree with the statement</span>
+            </div>
+            <div class="question">
+                <fieldset id="sec1F">
+            <table id='section1T'>
+               <tr>
+                <td style="width:77%; margin:0"> I and/or my colleagues know where to get information to help us analyse the business case for consciously attracting people with disabilities as members</td>
+                <td><input type="radio" name="section1" id=1 value=1 onclick="saveScore(this,sec1Answers)"> 1</td>
+                <td><input type="radio" name="section1" id=1 value=2 onclick="saveScore(this,sec1Answers)"> 2</td>
+                <td><input type="radio" name="section1" id=1 value=3 onclick="saveScore(this,sec1Answers)"> 3</td>
+                <td><input type="radio" name="section1" id=1 value=4 onclick="saveScore(this,sec1Answers)"> 4</td>
+                <td><input type="radio" name="section1" id=1 value=5 onclick="saveScore(this,sec1Answers)"> 5</td>
+                </tr> 
+                <tr>
+                    <td style="width:77%; margin:0">I/my colleagues have researched the scope for increasing the participation of the broader community, in particular people with disabilities  </td>
+                    
+                    <td><input type="radio" name="question2S1" id=2 value=1 onclick="saveScore(this,sec1Answers)"> 1 </td>
+                    <td><input type="radio" name="question2S1" id=2 value=2 onclick="saveScore(this,sec1Answers)"> 2 </td>
+                    <td><input type="radio" name="question2S1" id=2 value=3 onclick="saveScore(this,sec1Answers)"> 3 </td>
+                    <td><input type="radio" name="question2S1" id=2 value=4 onclick="saveScore(this,sec1Answers)"> 4 </td>
+                    <td><input type="radio" name="question2S1" id=2 value=5 onclick="saveScore(this,sec1Answers)"> 5 </td>
+                </tr> 
+
+                <tr>
+                    <td style="width:77%; margin:0">I know of disability service providers that I could link with in the local community</td>
+                    <td><input type="radio" name="question3S1" id=3 value=1 onclick="saveScore(this,sec1Answers)"> 1 </td>
+                    <td><input type="radio" name="question3S1" id=3 value=2 onclick="saveScore(this,sec1Answers)"> 2 </td>
+                    <td><input type="radio" name="question3S1" id=3 value=3 onclick="saveScore(this,sec1Answers)"> 3 </td>
+                    <td><input type="radio" name="question3S1" id=3 value=4 onclick="saveScore(this,sec1Answers)"> 4 </td>
+                    <td><input type="radio" name="question3S1" id=3 value=5 onclick="saveScore(this,sec1Answers)"> 5 </td>
+                </tr>
+                <tr>
+                    <td style="width:77%; margin:0">My colleagues and I inclusivize our services to provide for people with disabilities </td>
+                    <td><input type="radio" name="question4S1" id=4 value=1 onclick="saveScore(this,sec1Answers)"> 1 </td>
+                    <td><input type="radio" name="question4S1" id=4 value=2 onclick="saveScore(this,sec1Answers)"> 2 </td>
+                    <td><input type="radio" name="question4S1" id=4 value=3 onclick="saveScore(this,sec1Answers)"> 3 </td>
+                    <td><input type="radio" name="question4S1" id=4 value=4 onclick="saveScore(this,sec1Answers)"> 4 </td>
+                    <td><input type="radio" name="question4S1" id=4 value=5 onclick="saveScore(this,sec1Answers)"> 5 </td>
+                </tr>
+            </table>
+        
+            
+            <input type="button" id="btnScoreSec1" onclick="scoreSec('section1',sec1Answers,'btnScoreSec1','sec1F','sec1Summary');" value="View Section Summary" style="margin:15px;">
+        </fieldset>
+        
+            </div>
+            <p><textarea readonly disabled="yes" id="sec1Summary"></textarea></p>
+        <input type="button" style="display:none;" class="btnShowNextSec" onclick="showNextSec('section1','section2','sec1Summary')" value="Continue">
+
+        
+        
+    </div> 
+    
+
+
+
+
+
+
+            <br>
+            <div id="section2">
+            <div class="help">
+            <h2>Section 2: Value Proposition*</h2>
+            <span class="help-text">Select 1 value for each question, on a scale of 1-5 how much you agree/disagree with the statement</span>
+            </div>
+            <div class="question"> 
+                <fieldset id="sec2F">
+                <table id='section2T'>
+                    <tr>
+                     <td style="width:77%; margin:0">My colleagues and I have a significant contribution to make to the quality of life of people in our community, including people with disabilies</td>
+                     <td><input type="radio" name="question1S2" id=1 value=1 onclick="saveScore(this,sec2Answers)"> 1 </td>
+                     <td><input type="radio" name="question1S2" id=1 value=2 onclick="saveScore(this,sec2Answers)"> 2 </td>
+                     <td><input type="radio" name="question1S2" id=1 value=3 onclick="saveScore(this,sec2Answers)"> 3 </td>
+                     <td><input type="radio" name="question1S2" id=1 value=4 onclick="saveScore(this,sec2Answers)"> 4 </td>
+                     <td><input type="radio" name="question1S2" id=1 value=5 onclick="saveScore(this,sec2Answers)"> 5 </td>
+                     </tr> 
+                     <tr>
+                         <td style="width:77%; margin:0">My colleagues and I have the scope to improve opportunities for participation in fitness activities for people living in, or visiting our community, including people with disabilities</td>
+                         <td><input type="radio" name="question2S2" id=2 value=1 onclick="saveScore(this,sec2Answers)"> 1 </td>
+                         <td><input type="radio" name="question2S2" id=2 value=2 onclick="saveScore(this,sec2Answers)"> 2  </td>
+                         <td><input type="radio" name="question2S2" id=2 value=3 onclick="saveScore(this,sec2Answers)"> 3 </td>
+                         <td><input type="radio" name="question2S2" id=2 value=4 onclick="saveScore(this,sec2Answers)"> 4 </td>
+                         <td><input type="radio" name="question2S2" id=2 value=5 onclick="saveScore(this,sec2Answers)"> 5 </td>
+                     </tr> 
+     
+                     <tr>
+                         <td style="width:77%; margin:0">The benefits of increasing our Universability  to increase participation are clear</td>
+                         <td><input type="radio" name="question3S2" id=3 value=1 onclick="saveScore(this,sec2Answers)"> 1 </td>
+                         <td><input type="radio" name="question3S2" id=3 value=2 onclick="saveScore(this,sec2Answers)"> 2 </td>
+                         <td><input type="radio" name="question3S2" id=3 value=3 onclick="saveScore(this,sec2Answers)"> 3 </td>
+                         <td><input type="radio" name="question3S2" id=3 value=4 onclick="saveScore(this,sec2Answers)"> 4 </td>
+                         <td><input type="radio" name="question3S2" id=3 value=5 onclick="saveScore(this,sec2Answers)"> 5 </td>
+                     </tr>
+                     <tr>
+                         <td style="width:77%; margin:0">My colleagues and I play a major role in providing health services to the entire community, including people with disabilities</td>
+                         <td><input type="radio" name="question4S2" id=4 value=1 onclick="saveScore(this,sec2Answers)"> 1 </td>
+                         <td><input type="radio" name="question4S2" id=4 value=2 onclick="saveScore(this,sec2Answers)"> 2 </td>
+                         <td><input type="radio" name="question4S2" id=4 value=3 onclick="saveScore(this,sec2Answers)"> 3 </td>
+                         <td><input type="radio" name="question4S2" id=4 value=4 onclick="saveScore(this,sec2Answers)"> 4 </td>
+                         <td><input type="radio" name="question4S2" id=4 value=5 onclick="saveScore(this,sec2Answers)"> 5 </td>
+                     </tr>
+                     <tr>
+                        <td style="width:77%; margin:0">The Universability  of our fitness services increases the job satisfaction and turnover of my staff </td>
+                        <td><input type="radio" name="question5S2" id=5 value=1 onclick="saveScore(this,sec2Answers)"> 1 </td>
+                        <td><input type="radio" name="question5S2" id=5 value=2 onclick="saveScore(this,sec2Answers)"> 2   </td>
+                        <td><input type="radio" name="question5S2" id=5 value=3 onclick="saveScore(this,sec2Answers)"> 3 </td>
+                        <td><input type="radio" name="question5S2" id=5 value=4 onclick="saveScore(this,sec2Answers)"> 4 </td>
+                        <td><input type="radio" name="question5S2" id=5 value=5 onclick="saveScore(this,sec2Answers)"> 5 </td>
+                    </tr>
+                 </table>
+                 <input type="button" id="btnScoreSec2" onclick="scoreSec('section2',sec2Answers,'btnScoreSec2','sec2F','sec2Summary');" value="View Section Summary" style="margin:15px;">
+            </div>
+        </fieldset>
+        <p><textarea readonly disabled="yes" id="sec2Summary"></textarea></p>
+    <input type="button" style="display:none;" class="btnShowNextSec" onclick="showNextSec('section2','section3','sec2Summary')" value="Continue">
+
+        </div>
+
+
+
+
+
+
+
+        
+
+
+            <div id="section3">
+            <h2>Section 3: Vision</h2>
+            
+           
+            <div class="question">
+
+            <fieldset id="sec3F">
+            <table id='section3T'>
+                <tr>
+                 <td style="width:77%; margin:0px">My colleagues and I envision ourselves as leaders of cultural change 				</td>
+                 <td><input type="radio" name="question1S3" id=1 value=1 onclick="saveScore(this,sec3Answers)"> 1 </td>
+                 <td><input type="radio" name="question1S3" id=1 value=2 onclick="saveScore(this,sec3Answers)"> 2 </td>
+                 <td><input type="radio" name="question1S3" id=1 value=3 onclick="saveScore(this,sec3Answers)"> 3 </td>
+                 <td><input type="radio" name="question1S3" id=1 value=4 onclick="saveScore(this,sec3Answers)"> 4 </td>
+                 <td><input type="radio" name="question1S3" id=1 value=5 onclick="saveScore(this,sec3Answers)"> 5 </td>
+                 </tr> 
+                 <tr>
+                     <td>
+                        <strong>Which of the following statements best describes your situation within your organisation (Please select one)</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>I and/or my colleagues have identified set targets for increasing the UniversAbility  of our services and are putting strategies in place to achieve these goals </td>
+                    <td> <td><input type="radio" name="question2S3" id=2 value=5 onclick="saveScore(this,sec3Answers)"></td> </td>
+
+                </tr>
+                <tr>
+                    <td>I and/or my colleagues have identified scope for increasing the UniversAbility  of our services </td>
+                    <td> <td><input type="radio" name="question2S3" id=2 value=4 onclick="saveScore(this,sec3Answers)"></td> </td>
+
+                </tr>
+                <tr>
+                    <td>I THINK there may be scope for inclusivizing our services but am not sure</td>
+                    <td> <td><input type="radio" name="question2S3" id=2 value=3 onclick="saveScore(this,sec3Answers)"></td> </td>
+
+                </tr>
+                <tr>
+                    <td>I have never considered inclusivizing our services until now </td>
+                    <td> <td><input type="radio" name="question2S3" id=2 value=2 onclick="saveScore(this,sec3Answers)"></td> </td>
+
+                </tr>
+                <tr>
+                    <td>I don’t think inclusivizing our services, in particular for people with disabilities, is really an option for us but won’t rule it out completely until it has been fully explored  </td>
+                    <td> <td><input type="radio" name="question2S3" id=2 value=1 onclick="saveScore(this,sec3Answers)"></td> </td>
+
+                </tr>
+                 
+             </table>
+             <input type="button" id="btnScoreSec3" onclick="scoreSec('section3',sec3Answers,'btnScoreSec3','sec3F','sec3Summary')" value="View Section Summary" style="margin:15px;">
+            </fieldset>
+        </div>
+            <p><textarea readonly disabled="yes" id="sec3Summary"></textarea></p>
+            <input type="button"  class="btnShowNextSec" style="display:none;" onclick="showNextSec('section3','section4','sec3Summary')" value="Continue">
+        </div>
+
+
+
+
+
+
+
+        
+
+
+            <div id="section4">
+                <h2>Section 4: Philosophy</h2>
+                <div class='question'>
+                    <fieldset id="sec4F">
+                    <table id='section4T'>
+                        <tr>
+                            <td style="width:80%;">Does your organisation have stated ideals in your strategic plan or other management documents which relate UniversAbility of your services?  </td>
+                            <td>Yes <input type="radio" name="question1S4" id=1 value=10 onclick="saveScore(this,sec4Answers);showOptional('optionalQ');"> </td>
+                            <td>No <input type="radio" name="question1S4" id=1 value=0 onclick="saveScore(this,sec4Answers);hideOptional('optionalQ');"></td>
+                        </tr>
+                        
+                        <tr class = "optionalQ">
+                            <td style="width:80%;">Do you think an inclusive philosophy is a lived experience by:   </td>
+                            <td>a) Managment? <input type="checkbox"  id=2 value=10 onchange="saveScore(this,sec4Answers)"></td>
+                            <td>b) Staff?  <input type="checkbox"  id=3 value=10 onclick="saveScore(this,sec4Answers)"> </td>
+                            <td>c) Customers?  <input type="checkbox"  id=4 value=10 onclick="saveScore(this,sec4Answers)"> </td>
+                        </tr>
+                        
+                    </table>
+                    <input type="button" id="btnScoreSec4" onclick="scoreSec('section4',sec4Answers,'btnScoreSec4','sec4F','sec4Summary')" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec4Summary"></textarea></p>
+                <input type="button"  class="btnShowNextSec" style="display:none;" onclick="showNextSec('section4','section5','sec4Summary')" value="Continue">
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <div id="section5">
+                <div class="help">
+                    <h2>Section 5: Policy*</h2>
+                    <span class="help-text">Select Yes or No based on if you agree/disagree with the statements</span>
+                    </div>
+                
+                <div class='question'>
+                    <fieldset id="sec5F">
+                    <table id='section5T'>
+                        <tr>
+                            <td style="width:80%;">Does your charging policy account for the varied needs of your customers? E.g. No charge for personal assistants  </td>
+                            <td>Yes <input type="radio" name="question1S5" id=1 value=10 onclick="saveScore(this,sec5Answers)"> </td>
+                            <td>No <input type="radio" name="question1S5" id=1 value=0 onclick="saveScore(this,sec5Answers)"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:80%;">Do you track and monitor the proportion of your club members who experience disabilities?</td>
+                            <td>Yes <input type="radio" name="question2S5" id=2 value=10 onclick="saveScore(this,sec5Answers)"> </td>
+                            <td>No <input type="radio" name="question2S5" id=2 value=0 onclick="saveScore(this,sec5Answers)"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Have you a budget allocated to:
+                            </td>
+                        </tr>
+                        <tr>  
+                            <td style="width:80%;">(a) increasing the UniversAbility  of your services? (eg. facilities, equipment and staff training)	</td>
+                            <td style="width:80%;">Not needed - equipment is already fully accessible <input type="radio" name="question3S5" id=3 value=10 onclick="saveScore(this,sec5Answers)"></td>
+                            <td>Yes <input type="radio" name="question3S5" id=3 value=10 onclick="saveScore(this,sec5Answers)"> </td>
+                            <td>No <input type="radio" name="question3S5" id=3 value=0 onclick="saveScore(this,sec5Answers)"></td>
+                           
+                        </tr>
+                        <tr>  
+                            <td style="width:80%;">(b)	increasing the UniversAbility  of your policies? 	</td>
+                            <td style="width:80%;"></td>
+                            <td >Yes <input type="radio" name="question4S5" id=4 value=10 onclick="saveScore(this,sec5Answers)"> </td>
+                            <td >No <input type="radio" name="question4S5" id=4 value=0 onclick="saveScore(this,sec5Answers)"></td>
+                        </tr>
+                        <tr>  
+                            <td style="width:80%;">	Are you familiar with the national legislation that relates to disability service provision?</td>
+                            <td style="width:80%;"></td>
+                            <td >Yes <input type="radio" name="question5S5" id=5 value=10 onclick="saveScore(this,sec5Answers)"> </td>
+                            <td >No <input type="radio" name="question5S5" id=5 value=0 onclick="saveScore(this,sec5Answers)"></td>
+                        </tr>
+                        
+                    </table>
+                    <input type="button" id="btnScoreSec5" onclick="scoreSec('section5',sec5Answers,'btnScoreSec5','sec5F','sec5Summary')" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec5Summary"></textarea></p>
+                <input type="button"  class="btnShowNextSec" style="display:none;" onclick="showNextSec('section5','section6','sec5Summary')" value="Continue">
+            </div>
+
+
+
+
+
+           
+            
+            <div id="section6">
+                <div class="help">
+                    <h2>Section 6: Processes*</h2>
+                    <span class="help-text">Select Yes or No based on if you agree/disagree with the statements</span>
+                    </div>
+                <div class='question'>
+                    <fieldset id="sec6F">
+                    <table id='section6T'>
+                       <tr>
+                           <td style="width:85%;">
+                            Do you engage with disability groups in your local community?
+                           </td>
+                           <td>Yes <input type="radio" name="question1S6" id=1 value=10 onclick="saveScore(this,sec6Answers)"> </td>
+                           <td>No <input type="radio" name="question1S6" id=1 value=0 onclick="saveScore(this,sec6Answers)"></td>
+                       </tr>
+                       <tr>
+                        <td style="width:85%;">
+                            Have you forged any alliance/partnership with any disability organisation?
+                        </td>
+                        <td>Yes <input type="radio" name="question2S6" id=2 value=10 onclick="saveScore(this,sec6Answers)"> </td>
+                        <td>No <input type="radio" name="question2S6" id=2 value=0 onclick="saveScore(this,sec6Answers)"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Have you or your staff embraced any assistive technologies (E.g. Assist-Mi app)?
+                        </td>
+                        <td>Yes <input type="radio" name="question3S6" id=3 value=10 onclick="saveScore(this,sec6Answers)"> </td>
+                        <td>No <input type="radio" name="question3S6" id=3 value=0 onclick="saveScore(this,sec6Answers)"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Have you or your colleagues undertaken any research on Inclusivizing your service?
+                        </td>
+                        <td>Yes <input type="radio" name="question4S6" id=4 value=10 onclick="saveScore(this,sec6Answers)"> </td>
+                        <td>No <input type="radio" name="question4S6" id=4 value=0 onclick="saveScore(this,sec6Answers)"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            Do you encourage your staff to engage in customer satisfaction conversations with different user groups?
+                        </td>
+                        <td>Yes <input type="radio" name="question5S6" id=5 value=10 onclick="saveScore(this,sec6Answers)"> </td>
+                        <td>No <input type="radio" name="question5S6" id=5 value=0 onclick="saveScore(this,sec6Answers)"></td>
+                    </tr>
+
+                    
+                    </table>
+                    <input type="button" id="btnScoreSec6" onclick="scoreSec('section6',sec6Answers,'btnScoreSec6','sec6F','sec6Summary')" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec6Summary"></textarea></p>
+                <input type="button"  class="btnShowNextSec" style="display:none;" onclick="showNextSec('section6','section7','sec6Summary')" value="Continue">
+            </div>
+
+
+
+
+            <div id="section7">
+                <div class="help">
+                    <h2>Section 7: Perception*</h2>
+                    <span class="help-text">Select Yes or No based on if you agree/disagree with the statements</span>
+                    </div>
+                <div class='question'>
+                    <fieldset id="sec7F">
+                    <table id='section7T'>
+                        <tr >
+                            <td>
+                               Do you gather information from your users on their beliefs about fitness being a fundamental right for all?
+                            </td>
+                            <td>Yes <input type="radio" name="question1S7" id=1 value=10 onclick="saveScore(this,sec7Answers)"> </td>
+                            <td>No <input type="radio" name="question1S7" id=1 value=0 onclick="saveScore(this,sec7Answers)"></td>
+                        </tr>
+
+                        <tr >
+                            <td>
+                                Do you gather information from people who do NOT use your facility on fitness being a fundamental right for all?
+                            </td>
+                            <td>Yes <input type="radio" name="question2S7" id=2 value=10 onclick="saveScore(this,sec7Answers)"> </td>
+                            <td>No <input type="radio" name="question2S7" id=2 value=0 onclick="saveScore(this,sec7Answers)"></td>
+                        </tr>
+                       
+                    </table>
+                    <input type="button" id="btnScoreSec7" onclick="scoreSec('section7',sec7Answers,'btnScoreSec7','sec7F','sec7Summary');" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec7Summary"></textarea></p>
+                <input type="button" class="btnShowNextSec" style="display:none;" onclick="showNextSec('section7','section8','sec7Summary')" value="Continue">
+            </div>
+
+
+            <div id="section8">
+                <h2>Section 8: Programmes</h2>
+                <p>This section refers to programmes that you deliver, or support delivery of, to consciously inclusivize your services</p>
+                <div class='question'>
+                    <fieldset id="sec8F">
+                    <table id='section8T'>
+                        
+                        <tr >
+                           <td>
+                            Do you and your staff provide programmes specifically for people with disabilities?
+                           </td>
+                           
+                           <td>
+                            Yes <input type="radio" name="question1S8" id=1 value=0 onclick="saveScore(this,sec8Answers);showOptional('optionalS8');">
+                           </td>
+                           <td>
+                            No <input type="radio" name="question1S8" id=1 value=0  onclick="saveScore(this,sec8Answers);hideOptional('optionalS8');">
+                           </td>
+                        
+                        </tr>
+                    
+                            <tr class="optionalS8" style="width:80%" >
+                                <td style="width:80%">
+                                   <strong> Disability Category </strong>
+                                </td>
+
+                                
+                            </tr>
+                            <tr class="optionalS8">
+                                
+                                <td>
+                                    Physical Disabilities
+                                 </td>
+                                <td>
+                                    Yes <input type="checkbox" name="question2S8" id=2  value=10 onclick="saveScore(this,sec8Answers)">
+                                   </td>
+                                   
+                                
+                            </tr>
+                            <tr class="optionalS8">
+                                <td>
+                                   Intellectual Disabilities
+                                </td>
+                                <td>
+                                    Yes <input type="checkbox" name="question3S8" id=3 value=10 onclick="saveScore(this,sec8Answers)">
+                                   </td>
+                                   
+                                
+                            </tr>
+                            <tr class="optionalS8">
+                                <td >
+                                   Sensory Disabilities
+                                </td>
+                                <td>
+                                    Yes <input type="checkbox" name="question4S8" id=4 value=10 onclick="saveScore(this,sec8Answers)">
+                                   </td>
+                                   
+                                
+                            </tr>
+                            <tr class="optionalS8">
+                                <td >
+                                   Mental health difficulties
+                                </td>
+                                <td>
+                                    Yes <input type="checkbox" name="question5S8" id=5 value=10 onclick="saveScore(this,sec8Answers)">
+                                   </td>
+                                   
+                                
+                            </tr>
+
+
+
+                            <tr >
+                                <td>
+                                    Do people with disabilities use the gym, pool, or participate in group activities etc. alongside other members? 
+                                </td>
+                                
+                                <td>
+                                 Yes <input type="radio" name="question6S8" id=6 value=0 onclick="saveScore(this,sec8Answers);showOptional('optional2');">
+                                </td>
+                                <td>
+                                 No <input type="radio" name="question6S8" id=6 value=0 onclick="saveScore(this,sec8Answers);hideOptional('optional2');">
+                                </td>
+                             
+                             </tr>
+                         
+                                 <tr class="optional2" style="width:80%" >
+                                     <td style="width:80%">
+                                        <strong> Disability Category </strong>
+                                     </td>
+     
+                                     
+                                 </tr>
+                                 <tr class="optional2">
+                                     
+                                     <td>
+                                         Physical Disabilities
+                                      </td>
+                                     <td>
+                                         Yes <input type="checkbox" name="question7S8" id=7  value=10 onclick="saveScore(this,sec8Answers)">
+                                        </td>
+                                        
+                                     
+                                 </tr>
+                                 <tr class="optional2">
+                                     <td>
+                                        Intellectual Disabilities
+                                     </td>
+                                     <td>
+                                         Yes <input type="checkbox" name="question8S8" id=8 value=10 onclick="saveScore(this,sec8Answers)">
+                                        </td>
+                                        
+                                     
+                                 </tr>
+                                 <tr class="optional2">
+                                     <td >
+                                        Sensory Disabilities
+                                     </td>
+                                     <td>
+                                         Yes <input type="checkbox" name="question9S8" id=9 value=10 onclick="saveScore(this,sec8Answers)">
+                                        </td>
+                                       
+                                     
+                                 </tr>
+                                 <tr class="optional2">
+                                     <td >
+                                        Mental health difficulties
+                                     </td>
+                                     <td>
+                                         Yes <input type="checkbox" name="question10S7" id=10 value=10 onclick="saveScore(this,sec8Answers)">
+                                        </td>
+                                        
+                                     
+                                 </tr>
+                       
+                    </table>
+                    <input type="button" id="btnScoreSec8" onclick="scoreSec('section8',sec8Answers,'btnScoreSec8','sec8F','sec8Summary')" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec8Summary"></textarea></p>
+                <input type="button"  class="btnShowNextSec" style="display:none;" onclick="showNextSec('section8','section9','sec8Summary')" value="Continue">
+            </div>
+
+            <div id="section9">
+                <div class="help">
+                    <h2>Section 9: People*</h2>
+                    <span class="help-text">Select Yes or No based on if you agree/disagree with the statements</span>
+                    </div>
+                <div class='question'>
+                    <fieldset id="sec9F">
+                    <table id='section9T'>
+                        <tr >
+                            <td>
+                               Have you or any of your staff/volunteers had training that facilitates the inclusion of people with disabilities?
+                            </td>
+                            
+                        </tr>
+
+                        <tr >
+                            <td>
+                                a.	Operational (teaching/instructional staff)
+                            </td>
+                            <td>Yes <input type="radio" name="question1S9" id=1 value=10 onclick="saveScore(this,sec9Answers)"> </td>
+                            <td>No <input type="radio" name="question1S9" id=1 value=0 onclick="saveScore(this,sec9Answers)"></td>
+                        </tr>
+                        <tr >
+                            <td>
+                                b.	Management 
+                            </td>
+                            <td>Yes <input type="radio" name="question2S9" id=2 value=10 onclick="saveScore(this,sec9Answers)"> </td>
+                            <td>No <input type="radio" name="question2S9" id=2 value=0 onclick="saveScore(this,sec9Answers)"></td>
+                        </tr>
+                        <tr >
+                            <td>
+                                c.	Front of house 
+                            </td>
+                            <td>Yes <input type="radio" name="question3S9" id=3 value=10 onclick="saveScore(this,sec9Answers)"> </td>
+                            <td>No <input type="radio" name="question3S9" id=3 value=0 onclick="saveScore(this,sec9Answers)"></td>
+                        </tr>
+                        <tr >
+                            <td>
+                                d.	Stakeholders/ contracted staff  
+                            </td>
+                            <td>Yes <input type="radio" name="question4S9" id=4 value=10 onclick="saveScore(this,sec9Answers)"> </td>
+                            <td>No <input type="radio" name="question4S9" id=4 value=0 onclick="saveScore(this,sec9Answers)"></td>
+                        </tr>
+
+                       
+                    </table>
+                    <input type="button" id="btnScoreSec9" onclick="scoreSec('section9',sec9Answers,'btnScoreSec9','sec9F','sec9Summary');" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec9Summary"></textarea></p>
+                <input type="button" class="btnShowNextSec" style="display:none;" onclick="showNextSec('section9','section10','sec9Summary')" value="Continue">
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div id="section10">
+                <h2>Section 10: Physical Access/Place</h2>
+                <div class='question'>
+                    <fieldset id="sec10F">
+                    <table id='section10T'>
+                        <tr >
+                            <td>
+                                Have you or your colleagues carried out an audit to evaluate the UniversAbility  of your facility                      
+                            </td>
+                            <td>Yes <input type="radio" name="question1S10" id=1 value=10 onclick="saveScore(this,sec10Answers)"> </td>
+                            <td>No <input type="radio" name="question1S10" id=1 value=0 onclick="saveScore(this,sec10Answers)"></td>
+                        </tr>
+
+                        <tr >
+                            <td>
+                                Does your facility( or the facility you use) consider the following disabilities when evaluating UniversAbility :
+                            </td>
+                            
+                           
+                        </tr>
+                        <tr>
+                            <td>
+                                Physical Disabilities
+                            </td>
+                            
+                                <td>Yes <input type="checkbox" name="question2S10" id=2 value=10 onclick="saveScore(this,sec10Answers)"> </td>
+                            
+                        </tr>
+                        <tr>
+                            <td>
+                                Intellectual Disabilities
+                            </td>
+                            
+                                <td>Yes <input type="checkbox" name="question3S10" id=3 value=10 onclick="saveScore(this,sec10Answers)"> </td>
+                            
+                        </tr>
+                        <tr>
+                            <td>
+                                Sensory Disabilities
+                            </td>
+                            
+                                <td>Yes <input type="checkbox" name="question4S10" id=4 value=10 onclick="saveScore(this,sec10Answers)"> </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Mental health difficulties
+                            </td>
+                            
+                                <td>Yes <input type="checkbox" name="question5S10" id=5 value=10 onclick="saveScore(this,sec10Answers)"> </td>
+                        </tr>  
+                       
+                    </table>
+                    <input type="button" id="btnScoreSec10" onclick="scoreSec('section10',sec10Answers,'btnScoreSec10','sec10F','sec10Summary');" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec10Summary"></textarea></p>
+                <input type="button" class="btnShowNextSec" style="display:none;" onclick="showNextSec('section10','section11','sec10Summary')" value="Continue">
+            </div>
+
+
+
+
+            <div id="section11">
+                <div class="help">
+                    <h2>Section 11: Promotion*</h2>
+                    <span class="help-text">Select Yes or No based on if you agree/disagree with the statements</span>
+                    </div>
+                <div class='question'>
+                    <fieldset id="sec11F">
+                    <table id='section11T'>
+                        <tr >
+                            <td>
+                                Is your promotional material inclusive of people with disabilities?	
+                            </td>
+                            <td>Yes <input type="radio" name="question1S11" id=1 value=10 onclick="saveScore(this,sec11Answers)"> </td>
+                            <td>No <input type="radio" name="question1S11" id=1 value=0 onclick="saveScore(this,sec11Answers)"></td>
+                        </tr>
+
+                        <tr >
+                            <td>
+                                Have you or your colleagues/staff developed any promotional materials with the aim of attracting people with disabilities? 
+                            </td>
+                            <td>Yes <input type="radio" name="question2S11" id=2 value=10 onclick="saveScore(this,sec11Answers)"> </td>
+                            <td>No <input type="radio" name="question2S11" id=2 value=0 onclick="saveScore(this,sec11Answers)"></td>
+                        </tr>
+                       
+                    </table>
+                    <input type="button" id="btnScoreSec11" onclick="scoreSec('section11',sec11Answers,'btnScoreSec11','sec11F','sec11Summary');" value="View Section Summary" style="margin:15px;">
+                    </fieldset>
+                </div>
+                <p><textarea readonly disabled="yes" id="sec11Summary"></textarea></p>
+                <input type="button" class="btnShowNextSec" style="display:none;" onclick="processScore()" value="Process">
+            </div>
+            
+
+
+        </div>
+    </div>
+    
+</body>
+</html>

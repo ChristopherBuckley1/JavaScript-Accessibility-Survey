@@ -1,0 +1,178 @@
+/* CSS Document */
+*, html{     margin:0;padding:0;}
+body{
+top:0;
+left:0;
+right:0;
+bottom:0;}
+
+fieldset{
+    width:100%;
+}
+
+.results textarea{
+    display:inline;
+    height:100%;
+}
+
+textarea{width: 150%;
+        height: 100px;
+        border: none;
+        display:none;
+        font-family:'Calibri','Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;font-size:16px;
+        resize: none;
+       background-color: white;
+       color: black;
+      
+    }
+
+.main{
+   font-family:'Calibri','Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;font-size:16px;
+    background-color:rgb(174, 174, 178) ;
+    overflow: hidden;
+    min-height:60em;
+}
+p{text-align: left;
+margin-top:1%;
+margin-bottom: 1%;
+padding-right:30%;}
+
+
+
+.inner-content{
+    background-color: white;
+    height:100%;
+    padding:5%;
+    padding-left:10%;
+    padding-right:10%;
+    margin-left:10%;
+    margin-right:10%;
+    padding-bottom:15%;
+    width:auto;
+    overflow: hidden;
+    border: 1px solid grey;
+    border-top:none;
+    border-bottom: none;
+    
+    
+}
+.inner-content-results{
+    background-color: white;
+    height:100%;
+    padding:2%;
+    padding-left:10%;
+    padding-right:10%;
+    margin-left:10%;
+    margin-right:10%;
+    padding-bottom:15%;
+    width:auto;
+    overflow: hidden;
+    border: 1px solid grey;
+    border-top:none;
+    border-bottom: none;
+    
+}
+
+
+#countryListBox
+{
+    display:none;
+}
+
+
+
+.hidden{
+    visibility:hidden;
+}
+
+.numbers{
+    margin-left:78%;
+    letter-spacing: 18px;
+}
+@media screen and (max-width: 800px) {
+    
+    .hidden{
+        visibility:visible;
+    }
+
+    table,tr,td{
+        display:block;
+    }
+    .numbers{display:none;}
+  }
+
+
+.question{
+    width:100%;
+        border: 1px solid black;
+        
+        }
+
+
+        
+.results textarea{height:100px;
+    min-height: 150px;}
+
+.results .inner-content{
+    min-height:60em;
+}
+
+th,td{padding:15px;}
+.optionalS8{visibility:hidden;}
+.optional2{visibility:hidden;}
+#optional{visibility:hidden;}
+.optionalQ{visibility:hidden;}
+#section1{display:block;}
+#section2{display:none;}
+#section3{display:none;}
+#section4{display:none;}
+#optionalQ{display:none;}
+#section5{display:none;}
+#section6{display:none;}
+#section7{display:none;}
+#section8{display:none;}
+#section9{display:none;}
+#section10{display:none;}
+#section11{display:none;}
+/* how to make css tooltip retrieved from https://www.w3schools.com/howto/howto_css_tooltip.asp */
+.help {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .help .help-text {
+    visibility: hidden;
+    width: 300px;
+    background-color: rgb(174, 174, 178);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .help .help-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(174, 174, 178) transparent transparent transparent;
+  }
+  
+  .help:hover .help-text {
+    visibility: visible;
+    opacity: 1;
+  }
+/*End of refactored section*/
+
+
+
